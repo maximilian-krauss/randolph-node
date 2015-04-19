@@ -5,6 +5,10 @@ module.exports = function() {
       crawler = this.crawler;
 
   var _getRandomQuote = function() {
+    if(!crawler.quotes) {
+      return undefined;
+    }
+
     var random_quote = crawler.quotes[Math.floor(Math.random() * crawler.quotes.length)];
     var referenced_post = _.find(crawler.posts, { id: random_quote.postReference });
 
