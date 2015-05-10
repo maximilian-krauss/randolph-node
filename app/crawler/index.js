@@ -30,5 +30,8 @@ module.exports = {
     });
   },
   quotes: [],
-  posts: []
+  posts: [],
+  linkWith: function(postId) {
+    return _.find(this.posts, { id: postId });
+  }
 };

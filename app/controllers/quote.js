@@ -10,7 +10,7 @@ module.exports = function() {
     }
 
     var random_quote = crawler.quotes[Math.floor(Math.random() * crawler.quotes.length)];
-    var referenced_post = _.find(crawler.posts, { id: random_quote.postReference });
+    var referenced_post = crawler.linkWith(random_quote.postReference);
 
     return {
       quote: random_quote,

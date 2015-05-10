@@ -7,10 +7,15 @@ var _sentenceContainsBuzzword = function(sentence) {
 
   for(var index = 0; index < buzzwords.length; index++) {
     if(normalized_sentence.indexOf(buzzwords[index].toLowerCase()) > -1) {
-      return true;
+      return {
+        match: true,
+        matchedBuzzword: buzzwords[index].toLowerCase()
+      };
     }
   }
-  return false;
+  return {
+    match: false
+  }
 };
 
 module.exports = function(posts, cb) {
@@ -19,10 +24,13 @@ module.exports = function(posts, cb) {
 
     var sentences = post.content.match(rx);
     _.forEach(sentences, function(sentence) {
-      if(_sentenceContainsBuzzword(sentence)) {
+      var matchResult = _sentenceContainsBuzzword(sentence);
+
+      if(matchResult.match) {
         quotes.push({
           text: sentence.trim(),
-          postReference: post.id
+          postReference: post.id,
+          matchedBuzzword: matchResult.matchedBuzzword
         });
       }
     });

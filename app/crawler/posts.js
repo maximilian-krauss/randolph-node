@@ -1,7 +1,9 @@
 var _ = require('lodash'),
     $ = require('cheerio'),
+    colors = require('colors'),
     request = require('request'),
-    base_url = 'http://blog.ralfw.de';
+    base_url = 'http://blog.ralfw.de',
+    production = process.env.PRODUCTION === 'true';
 
 var _guid = function() {
   function s4() {
@@ -47,6 +49,12 @@ var _parseUrl = function(url, cb, posts) {
     _findAndParsePosts(html, function(err, fetched_posts, next_up) {
       if(err) {
         return cb(err);
+      }
+
+      //Stop after 10 posts if not in production
+      if(!production && fetched_posts.length > 10) {
+        console.log('Fetched more than 10 posts, debug exit. wow'.yellow)
+        return cb(null, posts);
       }
 
       if(next_up) {
